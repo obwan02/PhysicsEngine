@@ -183,3 +183,5 @@ Vector2.cross = function(a, b){
 Vector2.dot = function(a, b){
 	return a.dot(b);
 }
+
+module.exports = p_maths;

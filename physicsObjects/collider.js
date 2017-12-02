@@ -17,3 +17,5 @@ class BoxCollider {
 		return false;
 	}
 }
+
+module.exports = p_physics;

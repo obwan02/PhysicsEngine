@@ -58,3 +58,5 @@ var Maths = {
 		return (16 * x * (Maths.pi - x)) / (5 * Maths.pi * Maths.pi - 4 * x * (Maths.pi - x))
 	}
 };
+
+module.exports = p_maths;

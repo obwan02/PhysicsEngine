@@ -61,3 +61,5 @@ class pObj {
 		this.angularAcceleration = torque / this.collider.inertia;
 	}
 }
+
+module.exports = p_physics;
