@@ -184,4 +184,4 @@ Vector2.dot = function(a, b){
 	return a.dot(b);
 }
 
-module.exports = p_maths;
+module.exports = Vector2;
