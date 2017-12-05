@@ -19,9 +19,9 @@ const rotateVertices = function(vertices, center, angle){
 		let dist = Vector2.distance_raw(center, v);
 
 		let startAngle = Vector2.to_angle(dist);
-		let nextAngle = startAngle + angle;
+		let nextAngle = startAngle + radians(angle);
 
-		let newPosition = Vector2.from_polar(dist, nextAngle);
+		let newPosition = Vector2.from_polar(dist.magnitude, nextAngle);
 		result.push(newPosition);
 	}
 
