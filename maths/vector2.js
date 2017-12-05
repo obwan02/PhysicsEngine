@@ -164,7 +164,7 @@ Vector2.add = function(a, b){
 	return a.clone().add(b);
 }
 
-Vector2.substract = function(a, b){
+Vector2.subtract = function(a, b){
 	return a.clone().subtract(b);
 }
 
