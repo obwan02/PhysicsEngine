@@ -1,30 +1,29 @@
 module.exports = {
-	start: function(update){
-		setTimeout(function(){
-			let start = new Date().getTime();
-			let interval = 1000 / 60;
+	start: function(update, s, f, st){
+		let start = s || Date.now();
+		let interval = 1000 / 70;
 
-			let frames = 0;
-			let secondTimer = new Date().getTime();
+		let frames = f || 0;
+		let secondTimer = st || Date.now();
 
-			while(true){
-				let now = new Date().getTime();
-				if(now - start >= interval){
-					if(update && typeof(update) == "function") {
-						update();
-						frames++;
-					}
-
-					start = new Date().getTime();
-				}
-
-				if(now - secondTimer > 1000) {
-					console.log(frames);
-					secondTimer = new Date().getTime();
-				}
+		let now = Date.now();
+		if(now - start >= interval){
+			if(update && typeof(update) == "function") {
+				update((now - start) / 1000);
+				frames++;
 			}
 
-		}, 0);
+			start = Date.now();
+		}
+
+		if(now - secondTimer > 1000) {
+			console.log(frames);
+			secondTimer = Date.now();
+			frames = 0;
+		}
+
+		setTimeout(function() { module.exports.start(update, start, frames, secondTimer); }, 0);
+		
 	},
 	makeContext: function(width, height){
 		let a = document.createElement("canvas");

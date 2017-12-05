@@ -144,7 +144,7 @@ Vector2.normalised = function(vector){
 }
 
 //Angle in radians
-Vector2.from_polar = function(angle, radius){
+Vector2.from_polar = function(radius, angle){
 	return new Vector2(radius * Math.cos(angle), radius * Math.sin(angle));
 }
 
