@@ -1,4 +1,6 @@
 module.exports = {
+	currentFPS: 0, 
+
 	start: function(update, s, f, st){
 		let start = s || Date.now();
 		let interval = 1000 / 70;
@@ -9,7 +11,7 @@ module.exports = {
 		let now = Date.now();
 		if(now - start >= interval){
 			if(update && typeof(update) == "function") {
-				update((now - start) / 1000);
+				update((now - start) / interval);
 				frames++;
 			}
 
@@ -17,7 +19,7 @@ module.exports = {
 		}
 
 		if(now - secondTimer > 1000) {
-			console.log(frames);
+			module.exports.currentFPS = frames;
 			secondTimer = Date.now();
 			frames = 0;
 		}

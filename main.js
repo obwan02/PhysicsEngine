@@ -1,6 +1,7 @@
 const {Vector2} = require("./maths/maths");
 const physics = require("./physics/physics");
-const {start, makeContext} = require("./draw");
+const draw = require("./draw");
+const {start, makeContext} = draw;
 
 const ctx = makeContext(640, 360);
 
@@ -19,10 +20,10 @@ const rotateVertices = function(vertices, center, angle){
 		let dist = Vector2.distance_raw(center, v);
 
 		let startAngle = Vector2.to_angle(dist);
-		let nextAngle = startAngle + radians(angle);
+		let nextAngle = startAngle + angle;
 
 		let newPosition = Vector2.from_polar(dist.magnitude, nextAngle);
-		result.push(newPosition);
+		result.push(newPosition.add(center));
 	}
 
 	return result;
@@ -51,32 +52,16 @@ const drawVertices = function(vertices, join, fill){
 
 function update(delta){
 	ctx.clearRect(0, 0, 640, 360);
+	ctx.fillStyle = "green";
+	ctx.fillText(String(draw.currentFPS), 10, 10);
 
 	let l = Math.sqrt(5000);
 
-	ctx.translate(100, 100);
+	var vertices = [new Vector2(150, 150), new Vector2(250, 150), new Vector2(250, 250), new Vector2(150, 250)];
+	var newVerts = rotateVertices(vertices, new Vector2(200, 200), radians(i));
+	drawVertices(newVerts, true, false);
 
-	ctx.beginPath();
-	// ctx.moveTo( l * Math.sin(radians(i)), -l * Math.cos(radians(i)));
-
-	// ctx.lineTo( l * Math.cos(radians(i)),  l * Math.sin(radians(i)));
-	// ctx.moveTo( l * Math.cos(radians(i)),  l * Math.sin(radians(i)));
-
-	// ctx.lineTo(-l * Math.sin(radians(i)),  l * Math.cos(radians(i)));
-	// ctx.moveTo(-l * Math.sin(radians(i)),  l * Math.cos(radians(i)));
-
-	// ctx.lineTo(-l * Math.cos(radians(i)), -l * Math.sin(radians(i)));
-	// ctx.moveTo(-l * Math.cos(radians(i)), -l * Math.sin(radians(i)));
-
-	// ctx.lineTo( l * Math.sin(radians(i)), -l * Math.cos(radians(i)));
-	// ctx.stroke();
-
-	var vertices = [new Vector2(50, 50), new Vector2(150, 50), new Vector2(150, 150), new Vector2(50, 150)];
-	drawVertices(vertices, true, true);
-
-	ctx.translate(-100, -100);
-
-	i += 0.2 * delta;
+	i += 2 * delta;
 
 }
 

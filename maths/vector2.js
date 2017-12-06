@@ -109,8 +109,20 @@ class Vector2 {
 		return this;
 	}
 
+	equals(other){
+		if(!(other instanceof Vector2))
+			return false
+
+		if(this.x == other.x && this.y == other.y)
+			return true; 
+	}
+
 	clone(){
 		return new Vector2(this.x, this.y);
+	}
+
+	toString(){
+		return `${this.x},${this.y}`
 	}
 
 	normalise(){
