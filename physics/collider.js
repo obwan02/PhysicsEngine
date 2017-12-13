@@ -6,7 +6,7 @@ class BoxCollider {
 
 		this.centerOfMass = new Vector2(width / 2, height / 2);
 		this.rotation = rotation;
-		this.pos = pos;
+		this.pos = Vector2.add(this.centerOfMass, this.pos);
 	}
 
 	calculateInertia(mass) {
@@ -26,29 +26,44 @@ class CollisionManager {
 		this.allColliders = [];
 	}
 
-	getCell(collider){
-		return new Vector2(Math.floor(Math.floor(collider.pos.x / this.cellSize) * cellSize), Math.floor(Math.floor(collider.pos.y / this.cellSize) * cellSize));
+	getCellPositions(collider){
+
+		var topLeft = new Vector2(Math.floor(Math.floor((collider.pos.x - collider.width / 2) / this.cellSize) * cellSize), Math.floor(Math.floor((collider.pos.y - collider.height / 2) / this.cellSize) * cellSize));
+		var topRight = new Vector2(Math.floor(Math.floor((collider.pos.x + collider.width / 2) / this.cellSize) * cellSize), Math.floor(Math.floor((collider.pos.y - collider.height / 2) / this.cellSize) * cellSize));
+		var bottomLeft = new Vector2(Math.floor(Math.floor((collider.pos.x - collider.width / 2) / this.cellSize) * cellSize), Math.floor(Math.floor((collider.pos.y + collider.height / 2) / this.cellSize) * cellSize));
+		var bottomRight = new Vector2(Math.floor(Math.floor((collider.pos.x + collider.width / 2) / this.cellSize) * cellSize), Math.floor(Math.floor((collider.pos.y + collider.height / 2) / this.cellSize) * cellSize));
+
+		return [topLeft.clone(), bottomRight.clone(), bottomLeft.clone(), bottomRight.clone()];
 	}
 
 	addCollider(collider){
-		let cellPos = this.getCell(collider);
+		let cellPos = this.getCellPositions(collider);
 		
-		let cellExists = false;
-		let foundCell = null;
-		for(var cell in this.grid){
-			if(cell == cellPos.toString()){
-				cellExists = true;
-				foundCell = cell;
+		let prevCell = null;
+		for(let i = 0; i < cellPos.length; i++){
+			let cellExists = false;
+			let foundCell = null;
+
+			if(prevCell.eqauls(cellPos[i])){
+				continue;
 			}
-		}
 
-		if(!cellExists){
-			this.grid[cellPos.toString()] = [];
-			this.grid[cellPos.toString()].push(collider);
-		} else {
-			this.grid[cell].push(collider);
-		}
+			for(var cell in this.grid){
+				if(cell == cellPos.toString()){
+					cellExists = true;
+					foundCell = cell;
+				}
+			}
 
+			if(!cellExists){
+				this.grid[cellPos.toString()] = [];
+				this.grid[cellPos.toString()].push(collider);
+			} else {
+				this.grid[cellPos.toString()].push(collider);
+			}
+
+			prevCell = cellPos[i];
+		}
 		this.allColliders.push(collider);
 	}
 

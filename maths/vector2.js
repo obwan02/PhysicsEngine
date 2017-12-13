@@ -151,13 +151,25 @@ class Vector2 {
 }
 
 Vector2.normalised = function(vector){
-	let scale = 1 / copy.magnitude;
+	let scale = 1 / vector.magnitude;
 	return Vector2.multiply(vector, scale);
+}
+
+Vector2.project = function(a, b){
+	return Vector2.scalar_projection(a, b) * b.normalised;
+}
+
+Vector2.scalar_projection = function(a, b){
+	a.magnitude * Math.cos(Vector2.angle_between(a, b));
 }
 
 //Angle in radians
 Vector2.from_polar = function(radius, angle){
 	return new Vector2(radius * Math.cos(angle), radius * Math.sin(angle));
+}
+
+Vector2.angle_between = function(a, b){
+	return Math.acos(a.dot(b) / (a.magnitude * b.magnitude));
 }
 
 Vector2.distance_raw = function(a, b){
