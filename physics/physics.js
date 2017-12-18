@@ -1,6 +1,6 @@
 var toExport = {
-	BoxCollider: require("./collider.js"),
-	pObj: require("./pobject.js")
-};
+	collisionManagement : require("./collider"),
+	pObj : require("./pobject")
+}
 
 module.exports = toExport;

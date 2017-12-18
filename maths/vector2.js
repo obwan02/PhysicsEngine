@@ -7,6 +7,11 @@ class Vector2 {
 	set(x, y){
 		if(typeof(x) == "number") this.x = x;
 		if(typeof(y) == "number") this.y = y;
+
+		if(x instanceof Vector2){
+			this.x = x.x;
+			this.y = x.y;
+		}
 	}
 
 	add(x, y){
@@ -126,7 +131,18 @@ class Vector2 {
 	}
 
 	normalise(){
-		this.set(this.normalised.x, this.normalised.y);
+		let scale = 1 / this.magnitude;
+		return this.multiply(scale);
+	}
+
+	rotate(center, angle){
+		let mag = Vector2.distance_raw(center, this);
+		let sa = Vector2.to_angle(mag);
+		sa += angle;
+
+		let result = Vector2.from_polar(mag.magnitude, sa).add(center);
+		this.set(result);
+
 		return this;
 	}
 
@@ -139,7 +155,7 @@ class Vector2 {
 	}
 
 	get normalised(){
-		return Vector2.normalised(this);
+		return this.clone().normalise();
 	}
 
 	get absolute(){
@@ -150,17 +166,28 @@ class Vector2 {
 	}
 }
 
+Vector2.get_normal_of_line = function(a, b){
+	return Vector2.subtract(b, a).rotate(Math.PI / 2);
+}
+
+Vector2.rotate = function(a, c, t){
+	let mag = Vector2.distance_raw(c, a);
+	let sa = Vector2.to_angle(mag);
+	sa += t;
+
+	return Vector2.from_polar(mag.magnitude, sa).add(c);
+}
+
 Vector2.normalised = function(vector){
-	let scale = 1 / vector.magnitude;
-	return Vector2.multiply(vector, scale);
+	return vector.clone().normalise();
 }
 
 Vector2.project = function(a, b){
-	return Vector2.scalar_projection(a, b) * b.normalised;
+	return b.normalised.multiply(Vector2.scalar_project(a, b));
 }
 
-Vector2.scalar_projection = function(a, b){
-	a.magnitude * Math.cos(Vector2.angle_between(a, b));
+Vector2.scalar_project = function(a, b){
+	return a.magnitude * Math.cos(Vector2.angle_between(a, b));
 }
 
 //Angle in radians
@@ -184,20 +211,20 @@ Vector2.distance = function(a, b){
 	return Vector2.distance_raw(a, b).absolute.magnitude;
 }
 
-Vector2.add = function(a, b){
-	return a.clone().add(b);
+Vector2.add = function(a, b, c){
+	return a.clone().add(b, c);
 }
 
-Vector2.subtract = function(a, b){
-	return a.clone().subtract(b);
+Vector2.subtract = function(a, b, c){
+	return a.clone().subtract(b, c);
 }
 
-Vector2.multiply = function(a, b){
-	return a.clone().multiply(b);
+Vector2.multiply = function(a, b, c){
+	return a.clone().multiply(b, c);
 }
 
-Vector2.divide = function(a, b){
-	return a.clone().divide(b);
+Vector2.divide = function(a, b, c){
+	return a.clone().divide(b, c);
 }
 
 Vector2.cross = function(a, b){

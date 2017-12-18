@@ -1,11 +1,13 @@
-const {Vector2} = require("./maths/maths");
-const physics = require("./physics/physics");
+const {Vector2} = require("./maths/maths")
+const {QuickSort, InsertionSort} = require("./util/sort");
+const physics = require("./physics/physics")
+const pObj = physics.pObj;
+const {Collision, BoxCollider, CollisionManager, Box_SAT} = physics.collisionManagement;
+
 const draw = require("./draw");
 const {start, makeContext} = draw;
 
 const ctx = makeContext(640, 360);
-
-let i = 0;
 
 const radians = function(deg){
 	return deg * Math.PI / 180
@@ -50,18 +52,45 @@ const drawVertices = function(vertices, join, fill){
 		ctx.stroke();
 }
 
+var tc1 = new BoxCollider(new Vector2(100, 100), 50, 50);
+var rb1 = new pObj(new Vector2(100, 100), 10, tc1);
+
+var tc2 = new BoxCollider(new Vector2(250, 250), 50, 50);
+var rb2 = new pObj(new Vector2(250, 250), 10, tc2); 
+
+let mx = 0;
+let my = 0;
+
+var cm1 = new CollisionManager();
+cm1.addCollider(tc1);
+cm1.addCollider(tc2);
+
+window.onmousemove = function(e){
+	mx = e.clientX;
+	my = e.clientY;
+}
+
+var points = [];
+var rot = 0;
+
 function update(delta){
 	ctx.clearRect(0, 0, 640, 360);
 	ctx.fillStyle = "green";
 	ctx.fillText(String(draw.currentFPS), 10, 10);
 
-	let l = Math.sqrt(5000);
+	rb2.setPosition(mx, my);
 
-	var vertices = [new Vector2(150, 150), new Vector2(250, 150), new Vector2(250, 250), new Vector2(150, 250)];
-	var newVerts = rotateVertices(vertices, new Vector2(200, 200), radians(i));
-	drawVertices(newVerts, true, false);
+	rb1.update();
+	rb2.update();
 
-	i += 2 * delta;
+	if(cm1.checkCollisions().length > 0){
+		console.log("Hit");
+	}
+
+	drawVertices(tc2.vertices, true, false);
+	drawVertices(tc1.vertices, true, false);
+
+
 
 }
 
