@@ -1,8 +1,9 @@
+const  maths = require("mathjs");
 const {Vector2} = require("./maths/maths")
 const {QuickSort, InsertionSort} = require("./util/sort");
 const physics = require("./physics/physics")
-const pObj = physics.pObj;
-const {Collision, BoxCollider, CollisionManager, Box_SAT} = physics.collisionManagement;
+const RigidBody = physics.RigidBody;
+const {Collision, BoxCollider, CollisionManager} = physics.collisionManagement;
 
 const draw = require("./draw");
 const {start, makeContext} = draw;
@@ -53,13 +54,13 @@ const drawVertices = function(vertices, join, fill){
 }
 
 var tc1 = new BoxCollider(new Vector2(100, 100), 50, 50);
-var rb1 = new pObj(new Vector2(100, 100), 10, tc1);
+var rb1 = new RigidBody(new Vector2(100, 100), 10, tc1);
 
 var tc2 = new BoxCollider(new Vector2(250, 250), 50, 50);
-var rb2 = new pObj(new Vector2(250, 250), 10, tc2); 
+var rb2 = new RigidBody(new Vector2(250, 250), 10, tc2); 
 
-let mx = 0;
-let my = 0;
+var mx = 0;
+var my = 0;
 
 var cm1 = new CollisionManager();
 cm1.addCollider(tc1);

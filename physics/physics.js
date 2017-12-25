@@ -1,6 +1,6 @@
 var toExport = {
 	collisionManagement : require("./collider"),
-	pObj : require("./pobject")
+	RigidBody : require("./pobject")
 }
 
 module.exports = toExport;

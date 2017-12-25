@@ -1,5 +1,5 @@
 
-class pObj {
+class RigidBody {
 	constructor(pos, mass, collider){
 		this.pos = (pos instanceof Vector2) ? pos : new Vector2(0, 0);
 		this.rotation = 0;
@@ -86,7 +86,7 @@ class pObj {
 	}
 
 	clone() {
-		let result = new pObj(this.pos, this.mass, this.collider);
+		let result = new RigidBody(this.pos, this.mass, this.collider);
 		result.rotation = this.rotation;
 		result.velocity = this.velocity;
 		result.angularVelocity = this.angularVelocity;
@@ -97,4 +97,4 @@ class pObj {
 	}
 }
 
-module.exports = pObj;
+module.exports = RigidBody;
